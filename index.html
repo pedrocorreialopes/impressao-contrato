@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentos - Glipearte</title>
+
+  <!-- 🔗 Usa o mesmo CSS da página original -->
+  <link rel="stylesheet" href="estilo.css">
+
+  <style>
+    /* Caso queira testar sem o CSS original */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fafafa;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .documentos {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .doc-item {
+      width: 100%;
+      max-width: 600px;
+      padding: 15px;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .doc-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .botoes {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    button {
+      background: #0078D7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #005fa3;
+    }
+
+    #listaSalvos {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Documentos Glipearte</h1>
+
+  <div class="documentos">
+    <div class="doc-item" onclick="abrirDocumento('contrato_mini_kit_glipearte.pdf')">
+      📄 Contrato Mini Kit Glipearte
+    </div>
+    <div class="doc-item" onclick="abrirDocumento('contrato_pegue_e_monte_glipearte.pdf')">
+      📄 Contrato Pegue e Monte Glipearte
+    </div>
+  </div>
+
+  <iframe id="viewer"></iframe>
+
+  <div class="botoes">
+    <button onclick="imprimirDocumento()">🖨️ Imprimir</button>
+    <button onclick="salvarDocumento()">💾 Salvar</button>
+    <button onclick="mostrarSalvos()">📂 Mostrar Documentos Salvos</button>
+  </div>
+
+  <div id="listaSalvos"></div>
+
+  <script>
+    let documentoAtual = '';
+    let documentosSalvos = [];
+
+    function abrirDocumento(nomeArquivo) {
+      const viewer = document.getElementById('viewer');
+      viewer.src = nomeArquivo;
+      viewer.style.display = 'block';
+      documentoAtual = nomeArquivo;
+    }
+
+    function imprimirDocumento() {
+      const viewer = document.getElementById('viewer');
+      if (!viewer.src) return alert('Abra um documento primeiro!');
+      viewer.contentWindow.print();
+    }
+
+    function salvarDocumento() {
+      if (!documentoAtual) return alert('Abra um documento primeiro!');
+      const link = document.createElement('a');
+      link.href = documentoAtual;
+      link.download = documentoAtual;
+      link.click();
+      documentosSalvos.push(documentoAtual);
+      alert('Documento salvo com sucesso!');
+    }
+
+    function mostrarSalvos() {
+      const lista = document.getElementById('listaSalvos');
+      if (documentosSalvos.length === 0) {
+        lista.innerHTML = '<p>Nenhum documento salvo ainda.</p>';
+      } else {
+        lista.innerHTML = '<h3>📂 Documentos Salvos:</h3>' +
+          documentosSalvos.map(doc => `<p>✔️ ${doc}</p>`).join('');
+      }
+    }
+  </script>
+</body>
+</html>
